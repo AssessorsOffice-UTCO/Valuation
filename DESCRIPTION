@@ -2,7 +2,6 @@ Package: Valuation
 Type: Package
 Title: Utah County Assessor's Office Valuation Team Functions
 Version: 0.1.0
-Author: Geoffrey Zahn
 Maintainer: Geoffrey Zahn <GeoffreyZ@utahcounty.gov>
 Description: Collection of custom functions for the UT Co Assessor's Office.
     More info to be placed here as functions are added. 
@@ -13,7 +12,10 @@ LazyData: TRUE
 RoxygenNote: 7.2.1
 Authors@R: person("Geoffrey","Zahn", email = "GeoffreyZ@utahcounty.gov",
     role = c("aut","cre"), comment = c(ORCID = "0000-0002-8691-692X"))
-Depends: tidyverse,
+Depends: 
+    tidyverse,
     modelr,
     DescTools
 Roxygen: list(markdown = TRUE)
+Collate: 
+    'Ratio_Analysis.R'
