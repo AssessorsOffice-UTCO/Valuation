@@ -14,7 +14,7 @@
 #'     Actual coverage, Price related differential, Coefficient of dispersion, and
 #'     median centered coefficient of variation. The "Ratio" refers to Assessed Value / Sold Price
 #' @examples
-#' df <- data.frame(BR=c(1,2,3,4,1,2,3,4,1,2,3,4),SQFT=c(1000,1500,1750,2500,1100,1250,1550,2350,1350,1600,2000,2300),ASSESSED=c(300000,350000,475000,560000,349000,387000,421000,622000,368000,402000,521000,600000),#'    SOLD=c(295000,356000,470000,555000,342000,380000,411000,630000,363000,407000,501000,610000))
+#' df <- data.frame(BR=c(1,2,3,4,1,2,3,4,1,2,3,4),SQFT=c(1000,1500,1750,2500,1100,1250,1550,2350,1350,1600,2000,2300),ASSESSED=c(300000,350000,475000,560000,349000,387000,421000,622000,368000,402000,521000,600000),SOLD=c(295000,356000,470000,555000,342000,380000,411000,630000,363000,407000,501000,610000))
 #' mod <- glm(SOLD ~ BR + SQFT,data=df)
 #' RatioAnalysis(dat=df,model = mod)
 #' @export
@@ -77,7 +77,7 @@ RatioAnalysis <- function(dat=dat,model=mod,pred="pred",CI=.95){
   # weighted mean
   weighted_mean <- sum(df_pred[,pred],na.rm = TRUE) / sum(df_pred[,outcome],na.rm = TRUE)
   # coefficient of dispersion
-  COD <- abs(sum(ratio - median_estimate,na.rm = TRUE) / length(ratio)) / median_estimate
+  COD <- (sum(abs(ratio - median_estimate),na.rm = TRUE) / length(ratio)) / median_estimate
   # coefficient of variation
   COV <- sd(ratio,na.rm = TRUE) / mean(ratio,na.rm = TRUE)
   # price related differential
