@@ -1,11 +1,36 @@
+#' Build a ratio analysis for a trained real estate valuation model.
+#'
+#' This function will auto-determine the name of the outcome variable based on your model formula.
+#'     It takes, as inputs, the raw property data, the trained model, and returns a custom ratio analysis.
+#'     This serves as a replacement for SPSS 'Ratio Analysis'
+#'
+#' @param dat A data frame of property sales data that was used to train a model.
+#'     This is the 'raw' data.
+#' @param model A trained model object
+#' @param pred The name of the column of predicted values as a character string. Defaults to "pred"
+#' @param CI The confidence interval between 0 and 1. Defaults to .95
+#' @return A data frame of ratio statistics for the model:
+#'     Mean (incl. lower and upper bounds), Median (incl. lower and upper bounds),
+#'     Actual coverage, Price related differential, Coefficient of dispersion, and
+#'     median centered coefficient of variation. The "Ratio" refers to Assessed Value / Sold Price
+#' @examples
+#' df <- data.frame(BR=c(1,2,3,4,1,2,3,4,1,2,3,4),SQFT=c(1000,1500,1750,2500,1100,1250,1550,2350,1350,1600,2000,2300),ASSESSED=c(300000,350000,475000,560000,349000,387000,421000,622000,368000,402000,521000,600000),#'    SOLD=c(295000,356000,470000,555000,342000,380000,411000,630000,363000,407000,501000,610000))
+#' mod <- glm(SOLD ~ BR + SQFT,data=df)
+#' RatioAnalysis(dat=df,model = mod)
+
+
+
+
+
+
 RatioAnalysis <- function(dat=dat,model=mod,pred="pred",CI=.95){
-  
+
   # dat is your original data frame of observations
   # model is the model you wish to test that has already been trained on your observations
   # pred is the name of the predicted values (in quotes...defaults to "pred")
   # CI is the confidence interval you wish to use for mean and median estimation of the ratios (default is .95)
-  
-  
+
+
   # package dependencies
   packages = c("tidyverse", "modelr","DescTools")
   ## Now load or install&load all
@@ -18,7 +43,7 @@ RatioAnalysis <- function(dat=dat,model=mod,pred="pred",CI=.95){
       }
     }
   )
-  
+
   if(!"tidyverse" %in% (.packages())){
     stop("tidyverse needs to be loaded.")
   }
@@ -28,15 +53,15 @@ RatioAnalysis <- function(dat=dat,model=mod,pred="pred",CI=.95){
   if(!"DescTools" %in% (.packages())){
     stop("DescTools needs to be loaded.")
   }
-  
-  
+
+
   # auto-determine response variable from designated model
   outcome <- model$formula[2] %>% as.character()
-  
-  
+
+
   #  add predictions in new data frame inside this function
   df_pred <- add_predictions(data=dat,model=model,var = pred)
-  
+
   # ratio
   ratio <- pluck(df_pred,pred) / pluck(df_pred,outcome)
   CI <- CI
@@ -67,6 +92,6 @@ RatioAnalysis <- function(dat=dat,model=mod,pred="pred",CI=.95){
                          Price_Related_Differential=PRD,
                          Coef_of_Dispersion=COD,
                          Coef_of_Variation=paste0(round(COV*100,2),"%"))
-  
-  return(RA_Table)  
+
+  return(RA_Table)
 }

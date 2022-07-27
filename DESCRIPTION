@@ -1,12 +1,19 @@
 Package: Valuation
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Utah County Assessor's Office Valuation Team Functions
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Geoffrey Zahn
+Maintainer: Geoffrey Zahn <GeoffreyZ@utahcounty.gov>
+Description: Collection of custom functions for the UT Co Assessor's Office.
+    More info to be placed here as functions are added. 
+    This is currently just a shell.
+License: `use_mit_license()`
 Encoding: UTF-8
-LazyData: true
+LazyData: TRUE
 RoxygenNote: 7.2.1
+Authors@R: person("Geoffrey","Zahn", email = "GeoffreyZ@utahcounty.gov",
+    role = c("aut","cre"), comment = c(ORCID = "0000-0002-8691-692X"))
+Depends: tidyverse,
+    modelr,
+    DescTools
+Roxygen: list(markdown = TRUE)
