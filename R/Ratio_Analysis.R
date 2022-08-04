@@ -57,7 +57,7 @@ RatioAnalysis <- function(dat=dat,model=mod,pred="pred",CI=.95){
 
 
   # auto-determine response variable from designated model
-  outcome <- model$formula[2] %>% as.character()
+  outcome <- formula(model)[2] %>% as.character()
 
 
   #  add predictions in new data frame inside this function
