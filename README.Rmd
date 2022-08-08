@@ -15,6 +15,9 @@ The goal is to house all custom functions from the Data Analysis Team here for e
 ### Functions
 
 RatioAnalysis()
+ratio_stats()
+MedianCI()
+StrpAttr()
 
 
 

@@ -13,9 +13,5 @@ RoxygenNote: 7.2.1
 Authors@R: person("Geoffrey","Zahn", email = "GeoffreyZ@utahcounty.gov",
     role = c("aut","cre"), comment = c(ORCID = "0000-0002-8691-692X"))
 Depends: 
-    tidyverse,
-    modelr,
-    DescTools
+    tidyverse
 Roxygen: list(markdown = TRUE)
-Collate: 
-    'Ratio_Analysis.R'
