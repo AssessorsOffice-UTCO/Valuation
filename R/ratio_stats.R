@@ -22,8 +22,9 @@ ratio_stats <- function(assessed_value,sold_prices,CI=0.95){
 
   # calculate ratio mean and median
   ratio <- assessed_value / sold_prices
+  ratio <- ratio[!is.infinite(ratio)] # remove any sales for $0 that would mess up mean calculation
   CI <- CI
-  meantest <- t.test(ratio,mu = 1,na.rm=TRUE,conf.level = CI)
+  meantest <- t.test(ratio,na.rm=TRUE,conf.level = CI)
   mean_estimate <- unname(meantest$estimate)
   mean_lowerbound <- unname(meantest$conf.int[1])
   mean_upperbound <- unname(meantest$conf.int[2])
