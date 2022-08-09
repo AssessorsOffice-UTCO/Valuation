@@ -8,7 +8,9 @@ merge_districts(
   df,
   district_id_col = "district",
   sold_price_col = "sold_price",
-  res_rcnld_col = "res_rcnld"
+  res_rcnld_col = "res_rcnld",
+  rl_value_col = "rl_value",
+  acreage_col = "acreage"
 )
 }
 \arguments{
@@ -19,6 +21,10 @@ merge_districts(
 \item{sold_price_col}{Character string specifying the name of the column containing sale price values. Default = "sold_price"}
 
 \item{res_rcnld_col}{Character string specifying the name of the column containing rcnld or other measure for comparing districts. Default = "res_rcnld"}
+
+\item{rl_value_col}{Character string specifying the name of the column containing land_value or other measure for comparing districts. Default = "rl_value"}
+
+\item{acreage_col}{Character string specifying the name of the column containing acreage or other measure for comparing districts. Default = "acreage"}
 }
 \value{
 A named list of estimated cap rate, including upper and lower bounds:

@@ -8,6 +8,8 @@
 #' @param district_id_col Character string specifying the name of the column that specifies district. Default = "district"
 #' @param sold_price_col Character string specifying the name of the column containing sale price values. Default = "sold_price"
 #' @param res_rcnld_col Character string specifying the name of the column containing rcnld or other measure for comparing districts. Default = "res_rcnld"
+#' @param rl_value_col Character string specifying the name of the column containing land_value or other measure for comparing districts. Default = "rl_value"
+#' @param acreage_col Character string specifying the name of the column containing acreage or other measure for comparing districts. Default = "acreage"
 #' @return A named list of estimated cap rate, including upper and lower bounds:
 #'     mean_estimate, mean_lowerbound, and mean_upperbound
 #' @examples
@@ -26,7 +28,9 @@
 merge_districts <- function(df,
                             district_id_col="district",
                             sold_price_col="sold_price",
-                            res_rcnld_col="res_rcnld"){
+                            res_rcnld_col="res_rcnld",
+                            rl_value_col="rl_value",
+                            acreage_col="acreage"){
   # find cutoff for splitting "small" and "large" sales groups by land_district
   sales_summary <- df %>%
     group_by(!! sym(district_id_col)) %>% # !! sym() syntax allows string as quosure
@@ -35,12 +39,15 @@ merge_districts <- function(df,
   sales_summary <- sales_summary %>%
     mutate(cluster = kmeans(sales_summary$N_sales,centers = 2)$cluster)
 
-  sales_cutoff <- sales_summary %>%
-    group_by(cluster) %>%
-    summarize(min_sales = min(N_sales,na.rm=TRUE)) %>%
-    arrange(desc(min_sales)) %>%
-    pluck("min_sales") %>%
-    head(1)
+  sales_cutoff <- 50 #setting arbitrary cutoff
+
+#    # finding cutoff via kmeans
+    # sales_summary %>%
+    # group_by(cluster) %>%
+    # summarize(min_sales = min(N_sales,na.rm=TRUE)) %>%
+    # arrange(desc(min_sales)) %>%
+    # pluck("min_sales") %>%
+    # head(1)
 
   sales_summary <- sales_summary %>%
     mutate(district_sales_count = case_when(N_sales >= sales_cutoff ~ "large",
@@ -56,7 +63,8 @@ merge_districts <- function(df,
     group_by(!! sym(district_id_col)) %>%
     summarize(mean_res_rcnld = mean(!! sym(res_rcnld_col),na.rm=TRUE),
               median_res_rcnld = median(!! sym(res_rcnld_col),na.rm = TRUE),
-              sd_res_rcnld = sd(!! sym(res_rcnld_col),na.rm = TRUE)) %>%
+              sd_res_rcnld = sd(!! sym(res_rcnld_col),na.rm = TRUE),
+              val_ratio = median(!! sym(rl_value_col) / !! sym(acreage_col),na.rm=TRUE)) %>%
     mutate(sales_volume = "small")
 
   large_districts_summaries <-
@@ -65,14 +73,16 @@ merge_districts <- function(df,
     group_by(!! sym(district_id_col)) %>%
     summarize(mean_res_rcnld = mean(!! sym(res_rcnld_col),na.rm=TRUE),
               median_res_rcnld = median(!! sym(res_rcnld_col),na.rm = TRUE),
-              sd_res_rcnld = sd(!! sym(res_rcnld_col),na.rm = TRUE)) %>%
+              sd_res_rcnld = sd(!! sym(res_rcnld_col),na.rm = TRUE),
+              val_ratio = median(!! sym(rl_value_col) / !! sym(acreage_col),na.rm=TRUE)) %>%
     mutate(sales_volume = "large")
 
-  # for each "small" district, find the "large" district that's closest
+  # for each "small" district, find the "large" district that's most similar
+  # minimum difference between median costs per acre
   small_districts_summaries$folded_district <- NA
   for(i in seq_along(small_districts_summaries$median_res_rcnld)){
     closest_large_district <-
-      large_districts_summaries$district[which.min(abs(small_districts_summaries$median_res_rcnld[i]-large_districts_summaries$median_res_rcnld))]
+      large_districts_summaries$district[which.min(abs(small_districts_summaries$val_ratio[i]-large_districts_summaries$val_ratio))]
     small_districts_summaries$folded_district[i] <- closest_large_district
 
   }
