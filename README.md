@@ -30,3 +30,12 @@ ___
 `StripAttr()` - Taken from [*DescTools* package](https://cran.r-project.org/web/packages/DescTools/DescTools.pdf) to reduce dependencies
 
 `MedianCI()` - Taken from [*DescTools* package](https://cran.r-project.org/web/packages/DescTools/DescTools.pdf) to reduce dependencies
+
+___
+
+## Examples
+
+`df <- data.frame(net_income = c(51329.93,76826.74,42861.05,34066.37,142085.22,81460.92),
+                 sale_price = c(NA,1600000,0,1050000,1050000,479000),
+                 cap_rate = find_cap_rate(net_income,sale_price))`
+                 
