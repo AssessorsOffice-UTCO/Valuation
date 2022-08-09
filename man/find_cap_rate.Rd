@@ -23,5 +23,5 @@ It can handle missing, NaN, and Inf values.
 net_income <- c(51329.93,76826.74,42861.05,34066.37,142085.22,81460.92)
 sale_price <- c(NA,1600000,0,1050000,1050000,479000)
 cap_rate <- find_cap_rate(net_income,sale_price)
-cap_rate$mean_estimate; cap_rate$mean_lowerbound; cap_rate$mean_upperbound
+cap_rate$mean_estimate; cap_rate$mean_lowerbound; cap_rate$mean_upperbound; cap_rate$median_estimate; cap_rate$median_lowerbound; cap_rate$median_upperbound
 }
