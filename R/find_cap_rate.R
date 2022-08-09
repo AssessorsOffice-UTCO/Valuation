@@ -36,5 +36,25 @@ find_cap_rate <- function(net_income,sale_price){
                    median_estimate=median_estimate,
                    median_lowerbound=median_lowerbound,
                    median_upperbound=median_upperbound)
+
+  # plot mean and median
+  d <- data.frame(measure = c("mean","median"),
+                  estimate = c(cap_rate$mean_estimate,cap_rate$median_estimate),
+                  upperbound = c(cap_rate$mean_upperbound,cap_rate$median_upperbound),
+                  lowerbound = c(cap_rate$mean_lowerbound,cap_rate$median_lowerbound))
+  plot(x=factor(d$measure),
+       y=d$estimate,
+       ylim=c(0,max(c(d$upperbound))),
+       xlab="",
+       ylab="estimate",main="Cap rate mean and median")
+  points(x=factor(d$measure),
+         y=d$upperbound)
+  points(x=factor(d$measure),
+         y=d$lowerbound)
+
   return(cap_rate)
 }
+
+
+
+
