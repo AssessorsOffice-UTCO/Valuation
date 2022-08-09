@@ -11,8 +11,9 @@ ___
 
 ### Installation
 
-To install the latest development version:
+To install/update to the latest development version:
 
+In a fresh R session...
 `devtools::install_github("UTCoAssessors/Valuation",dependencies = TRUE)`
 
 ___
@@ -27,4 +28,4 @@ ___
 
 `StripAttr()` - Taken from [*DescTools* package](https://cran.r-project.org/web/packages/DescTools/DescTools.pdf) to reduce dependencies
 
-`MedianCI()` - Taken from [*DescTools*](https://cran.r-project.org/web/packages/DescTools/DescTools.pdf) package to reduce dependencies
+`MedianCI()` - Taken from [*DescTools* package](https://cran.r-project.org/web/packages/DescTools/DescTools.pdf) to reduce dependencies
