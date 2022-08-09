@@ -14,6 +14,7 @@ ___
 To install/update to the latest development version:
 
 In a fresh R session...
+
 `devtools::install_github("UTCoAssessors/Valuation",dependencies = TRUE)`
 
 ___
