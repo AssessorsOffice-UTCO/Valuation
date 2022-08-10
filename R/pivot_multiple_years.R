@@ -13,16 +13,40 @@
 #' @export
 
 pivot_multiple_years <- function(dat,years){
-library(tidyverse)
+
+
+  # package dependencies
+  packages = c("tidyverse")
+  ## Now load or install&load all
+  package.check <- lapply(
+    packages,
+    FUN = function(x) {
+      if (!require(x, character.only = TRUE)) {
+        install.packages(x, dependencies = TRUE)
+        library(x, character.only = TRUE)
+      }
+    }
+  )
+  library(tidyverse)
+
+  if(!"tidyverse" %in% (.packages())){
+    stop("tidyverse needs to be loaded.")
+  }
+
+  # create empty list and counter var
   df_list <- list()
   z=1
+
+  # for-loop
   for(i in years){
 
-    my_grep_pattern <- paste0("^x",as.character(i),"_[r,i]")
+    # build character strings out of i, used later for subsetting and grep
+    my_grep_pattern <- paste0("^x",as.character(i),"_[r,i]") # grep pattern for, eg, "x2022_im_res"
     n_prefix <- paste0("x",i,"_")
-    proptype_col <- paste0("x",i,"_prop_type")
-    x <- grep(my_grep_pattern,names(dat))
+    proptype_col <- paste0("x",i,"_prop_type") # this will be the first thing to break
+    x <- grep(my_grep_pattern,names(dat)) # find column positions
 
+    # pivot on just year i columns
     dat_i <- dat %>%
       pivot_longer(x,
                    names_to = "category",
@@ -30,13 +54,17 @@ library(tidyverse)
       select(-starts_with("x")) %>%
       mutate(year = i)
 
+    # add in prop_type from year i
     dat_i$annual_prop_type <- dat %>%
       pluck(proptype_col) %>%
       rep(each=6)
 
+    # put pivoted data frame into list
     df_list[[z]] <- dat_i
-    z=z+1
+    z=z+1 # increment
   }
+
+  # combine all data frames in that list using full_join()
   long <- purrr::reduce(df_list,full_join)
   return(long)
 }
