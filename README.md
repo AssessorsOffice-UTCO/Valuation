@@ -31,6 +31,15 @@ ___
 
 `MedianCI()` - Taken from [*DescTools* package](https://cran.r-project.org/web/packages/DescTools/DescTools.pdf) to reduce dependencies
 
+`pivot_multiple_years()` - This is a pretty specific use-case function for when multiple years of valuation categories are spread out over many columns. It requires a very specifically formatted data set, but one that's popped up repeatedly in valuation dat sets. It assumes that cols are named like below.
+
+If your data looks like this...
+
+|x2022_prop_type|x2022_re_com|x2022_im_res|x2022_im_agr|x2022_im_com|x2021_prop_type|x2021_re_res|x2021_re_agr|x2021_re_com|
+|---------------|------------|------------|------------|------------|---------------|------------|------------|------------|
+
+...this function may be for you.
+
 ___
 
 ## Examples
