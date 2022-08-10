@@ -21,7 +21,7 @@ ___
 
 ### Current functions
 
-`ratio_stats()` - Takes two vectors ("assessed values" and "actual sale prices") to calculate Ratio Statistics. The two vectors must be the same length and each element must correspond to a unique parcel. NA values are removed, so only parcels with actual sales info are included.
+`**ratio_stats()**` - Takes two vectors ("assessed values" and "actual sale prices") to calculate Ratio Statistics. The two vectors must be the same length and each element must correspond to a unique parcel. NA values are removed, so only parcels with actual sales info are included.
 
 `find_cap_rate()` - Takes two vectors ("net_income" and "sale_price") and estimates cap rate. Function can handle missing data and sales == 0. Returns a named list of 6 elements with mean, median, and upper- and lower-bounds. Also plots the values.
 
