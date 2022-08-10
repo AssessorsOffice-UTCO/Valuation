@@ -40,6 +40,14 @@ If your data looks like this...
 
 ...this function may be for you.
 
+Returns a "long" data frame where those annual valuation columns are reduced to:
+
+|category|value|year|
+|--------|-----|----|
+|re_res|0|2018|
+|re_agr|10|2018|
+|re_com|100|2018|
+
 ___
 
 ## Examples
