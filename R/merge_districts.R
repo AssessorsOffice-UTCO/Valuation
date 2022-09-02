@@ -39,18 +39,11 @@ merge_districts <- function(df,
 
   sales_cutoff <- N #setting arbitrary cutoff
 
-#    # finding cutoff via kmeans
-    # sales_summary %>%
-    # group_by(cluster) %>%
-    # summarize(min_sales = min(N_sales,na.rm=TRUE)) %>%
-    # arrange(desc(min_sales)) %>%
-    # pluck("min_sales") %>%
-    # head(1)
+
 
   sales_summary <- sales_summary %>%
     mutate(district_sales_count = case_when(N_sales >= sales_cutoff ~ "large",
-                                            TRUE ~ "small")) %>%
-    select(-cluster)
+                                            TRUE ~ "small"))
   df <- left_join(df,sales_summary,by=district_id_col)
 
 
