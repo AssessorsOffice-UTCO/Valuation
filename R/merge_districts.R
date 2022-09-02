@@ -26,6 +26,7 @@
 #' @export
 
 merge_districts <- function(df,
+                            N=50,
                             district_id_col="district",
                             sold_price_col="sold_price",
                             res_rcnld_col="res_rcnld",
@@ -39,7 +40,7 @@ merge_districts <- function(df,
   sales_summary <- sales_summary %>%
     mutate(cluster = kmeans(sales_summary$N_sales,centers = 2)$cluster)
 
-  sales_cutoff <- 50 #setting arbitrary cutoff
+  sales_cutoff <- N #setting arbitrary cutoff
 
 #    # finding cutoff via kmeans
     # sales_summary %>%
@@ -83,9 +84,14 @@ merge_districts <- function(df,
   for(i in seq_along(small_districts_summaries$median_res_rcnld)){
     closest_large_district <-
       large_districts_summaries$district[which.min(abs(small_districts_summaries$val_ratio[i]-large_districts_summaries$val_ratio))]
-    small_districts_summaries$folded_district[i] <- closest_large_district
 
+    if(length(closest_large_district) == 0){
+      small_districts_summaries$folded_district[i] <- NA
+    } else {
+      small_districts_summaries$folded_district[i] <- closest_large_district
+    }
   }
+
   large_districts_summaries <- large_districts_summaries %>%
     mutate(new_district= !! sym(district_id_col))
   small_districts_summaries <- small_districts_summaries %>%

@@ -6,6 +6,7 @@
 \usage{
 merge_districts(
   df,
+  N = 50,
   district_id_col = "district",
   sold_price_col = "sold_price",
   res_rcnld_col = "res_rcnld",
