@@ -37,9 +37,6 @@ merge_districts <- function(df,
     group_by(!! sym(district_id_col)) %>% # !! sym() syntax allows string as quosure
     summarize(N=n(), N_sales = sum(!is.na(!! sym(sold_price_col))))
 
-  sales_summary <- sales_summary %>%
-    mutate(cluster = kmeans(sales_summary$N_sales,centers = 2)$cluster)
-
   sales_cutoff <- N #setting arbitrary cutoff
 
 #    # finding cutoff via kmeans
