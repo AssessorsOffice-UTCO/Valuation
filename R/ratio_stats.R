@@ -55,7 +55,7 @@ ratio_stats <- function(assessed_value,sold_prices,CI=0.95){
                    Actual_Coverage=paste0(CI*100,"%"), #character
                    Price_Related_Differential=PRD, #numeric
                    Coef_of_Dispersion=COD, #numeric
-                   Coef_of_Variation=paste0(round(COV*100,2),"%")) #character
+                   Coef_of_Variation=COV) #numeric
 
   return(RA_Stats)
 
