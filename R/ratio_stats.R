@@ -46,7 +46,8 @@ ratio_stats <- function(assessed_value,sold_prices,CI=0.95){
   PRD <- mean(ratio,na.rm = TRUE) / weighted_mean
 
   # Build a table of the calculations
-  RA_Stats <- list(Mean=mean_estimate, #numeric
+  RA_Stats <- list(N=length(ratio), #numeric
+                   Mean=mean_estimate, #numeric
                    Mean_Lower=mean_lowerbound, #numeric
                    Mean_Upper=mean_upperbound, #numeric
                    Median=median_estimate, #numeric
