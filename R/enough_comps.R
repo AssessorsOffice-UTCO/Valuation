@@ -1,12 +1,12 @@
-#' Estimate value from income and cap rate
+#' Find out if parcel has enough comparables
 #'
 #' This function returns whether a parcel has enough comparables to do a sales grid to get an estimated value for a parcel
 #' Best used with purrr::map to apply over all parcels
 #'
-#' @param dat data frame containg lat, long, and sales information of all parcels
+#' @param dat data frame containing lat, long, and sales information of all parcels
 #' @param ID character or numeric of serial number of parcel you want to test
 #' @param miles_radius numeric for number of miles you want your range to be to search for sales
-#' @param n_sale numeric for number of sales requried to have enough comparables
+#' @param n_sale numeric for number of sales required to have enough comparables
 #' @return something
 #' @examples
 #' ID <- "094837839"
