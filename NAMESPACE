@@ -2,6 +2,7 @@
 
 export(MedianCI)
 export(StripAttr)
+export(enough_comps)
 export(find_cap_rate)
 export(merge_districts)
 export(pivot_multiple_years)
