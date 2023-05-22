@@ -30,7 +30,9 @@ MedianCI(
 A numeric vector with 3 elements: median, lwr.ci, upr.ci
 }
 \description{
-Taken from DescTools::StripAttr
+Taken from DescTools
+Modified to use both lower-tail binomial and full binomial values for median CI so as to match NCSS software
+The Lower Median CI uses the left-tailed test P\link[=X \\le x]{X \le x} while the Upper Median CI uses the full test P\link{X≤x}
 }
 \examples{
 MedianCI(rnorm(100),na.rm=TRUE)
