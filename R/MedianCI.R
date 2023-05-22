@@ -1,6 +1,8 @@
 #' Generate median with estimated confidence intervals
 #'
-#' Taken from DescTools::StripAttr
+#' Taken from DescTools
+#' Modified to use both lower-tail binomial and full binomial values for median CI so as to match NCSS software
+#' The Lower Median CI uses the left-tailed test P[X \le x] while the Upper Median CI uses the full test P[X≤x]
 #'
 #' @param x a (non-empty) numeric vector of data values
 #' @param conf.level confidence level of the interval
@@ -12,7 +14,6 @@
 #' @examples
 #' MedianCI(rnorm(100),na.rm=TRUE)
 #' @export
-
 
 MedianCI <- function (x, conf.level = 0.95, sides = c("two.sided", "left",
                                           "right"), na.rm = FALSE, method = c("exact", "boot"), R = 999)
