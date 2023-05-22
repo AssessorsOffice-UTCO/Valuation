@@ -28,6 +28,12 @@ MedianCI <- function (x, conf.level = 0.95, sides = c("two.sided", "left",
       k <- qbinom(p = (1 - conf.level)/2, size = n, prob = 0.5,
                   lower.tail = TRUE)
       ci <- sort(x)[c(k, n - k + 1)]
+      # to match NCSS, re-run without lower.tail and use that version of upper median CI
+      k2 <- qbinom(p = (1 - conf.level)/2, size = n, prob = 0.5,
+                   lower.tail = FALSE)
+      ci2 <- sort(x)[c(k2, n - k2 + 1)]
+      ci[2] <- ci2[1] # replace original upper median CI with non-lowertail test version
+
       attr(ci, "conf.level") <- 1 - 2 * pbinom(k - 1, size = n,
                                                prob = 0.5)
     }, left = {
