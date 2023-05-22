@@ -45,7 +45,15 @@ ratio_stats <- function(assessed_value,sold_prices,CI=0.95){
   # price related differential
   PRD <- mean(ratio,na.rm = TRUE) / weighted_mean
 
-  # current bestguess of how NCSS decides which stat to recommend ...
+  # price related bias (from Daniel's function)
+  val = .5 * (assessed_value / median(ratio)) + .5*sold_prices
+  ln_val = log(val)/0.693
+  diff_val = (ratio - median(ratio)) / median(ratio)
+  fit <- lm(diff_val ~ ln_val)
+  ret_val <- coef(fit)[2]
+  PRB <- c(ret_val, confint(fit, level = CI)[2,])
+
+  # current best guess of how NCSS decides which stat to recommend ...
   # Shapiro Test of normailty of ratios
   # If it IS normal, use the mean, if NOT normal, use median
   shap.test <- shapiro.test(ratio)
@@ -54,7 +62,7 @@ ratio_stats <- function(assessed_value,sold_prices,CI=0.95){
   stat_to_use <- ifelse(shap.pval < 0.10, "use median", "use mean")
 
   # Build a table of the calculations
-  RA_Stats <- list(N=length(ratio), #numeric
+  RA_Stats <- list(Count=length(ratio), #numeric
                    Mean=mean_estimate, #numeric
                    Mean_Lower=mean_lowerbound, #numeric
                    Mean_Upper=mean_upperbound, #numeric
@@ -64,12 +72,13 @@ ratio_stats <- function(assessed_value,sold_prices,CI=0.95){
                    Actual_Coverage=paste0(CI*100,"%"), #character
                    Price_Related_Differential=PRD, #numeric
                    Coef_of_Dispersion=COD, #numeric
-                   Coef_of_Variation=COV) #numeric
+                   Coef_of_Variation=COV,
+                   Price_Related_Bias=unname(PRB[1]),
+                   NormTest_Results=stat_to_use) #numeric
 
   return(RA_Stats)
 
 }
-
 
 
 
