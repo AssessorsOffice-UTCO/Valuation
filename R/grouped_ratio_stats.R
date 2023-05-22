@@ -29,7 +29,7 @@ grouped_ratio_stats <- function(df,assessed_column,sold_price_column,grouping_co
     group_split()
 
   find_names <- function(x){x %>% select({{grouping_column}}) %>% unlist() %>% unname() %>% unique()}
-  group_names <- df_list %>%
+  group_names <- split_df %>%
     map(find_names) %>%
     as.character()
 
