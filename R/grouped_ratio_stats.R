@@ -6,7 +6,7 @@
 #' This function requires a grouping variable, such as a Neighborhood
 #' It will not perform tests for any groups that have fewer than 3 observations, but will still display them if output="table"
 #'
-#' The NormTest_Results field is just a guess at how NCSS decides whether to recommend Mean or Median, but is based on a Shapiro test of normality with a 0.10 cutoff.
+#' The NormTest_Results field is to match how NCSS decides whether to recommend Mean or Median. It is based on a Shapiro test of normality with a 0.10 cutoff.
 #'
 #' @param df Data frame containing columns with assessed values, sold prices, and a grouping variable at the minimum
 #' @param assessed_column The name (not quoted) of the column with assessed values
@@ -26,6 +26,28 @@
 
 grouped_ratio_stats <- function(df,assessed_column,sold_price_column,grouping_column,output="list",min_count=10){
 
+  # run ratio stats on overall dataset for comparison
+  assessed_value_total <- df %>%
+    select({{assessed_column}}) %>%
+    as.vector() %>%
+    unlist() %>%
+    unname()
+  sold_prices_total <- df %>%
+    select({{sold_price_column}}) %>%
+    as.vector() %>%
+    unlist() %>%
+    unname()
+
+  # put into workable format to mesh with "table" output below
+  total_ratio_stats <- ratio_stats(assessed_value = assessed_value_total,
+                                   sold_prices = sold_prices_total) %>%
+    as.data.frame() %>%
+    mutate(Group="Total") %>%
+    dplyr::select(Group,everything()) %>%
+    mutate(across(where(is.numeric),function(x){round(x,4)}))
+
+
+  # split data frame by grouping variable provided
   split_df <- df %>%
     group_by({{grouping_column}}) %>%
     group_split()
@@ -46,7 +68,7 @@ grouped_ratio_stats <- function(df,assessed_column,sold_price_column,grouping_co
   # remove groups with fewer than 3 observations
   filtered_split_df <- Filter(function(x){nrow(x) >= 3},split_df)
 
-
+  # function to determine an individual group's ratio stats
   ind_ratio <- function(x){
     assessed_value <- x %>%
       select({{assessed_column}}) %>%
@@ -98,9 +120,10 @@ grouped_ratio_stats <- function(df,assessed_column,sold_price_column,grouping_co
 
     row.names(stats_table) <- NULL
 
-    # format column order to look like NCSS
+    # format column order to look like NCSS and add "total row"
     stats_table <-
       stats_table %>%
+      bind_rows(total_ratio_stats) %>%
       dplyr::select(Group,Count,Median,LCL_Median=Median_Lower,UCL_Median=Median_Upper,
                     Mean,LCL_Mean=Mean_Lower,UCL_Mean=Mean_Upper,
                     PRD=Price_Related_Differential,COD=Coef_of_Dispersion,COV=Coef_of_Variation,
