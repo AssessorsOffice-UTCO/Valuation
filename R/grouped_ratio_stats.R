@@ -4,7 +4,9 @@
 #' sale prices, OR it can return a table comparable to NCSS
 #'
 #' This function requires a grouping variable, such as a Neighborhood
-#' It will drop any groups that do not have at least 3 observations, but will still display them at the bottom of the table if output="table"
+#' It will not perform tests for any groups that have fewer than 3 observations, but will still display them if output="table"
+#'
+#' The NormTest_Results field is just a guess at how NCSS decides whether to recommend Mean or Median, but is based on a Shapiro test of normality with a 0.10 cutoff.
 #'
 #' @param df Data frame containing columns with assessed values, sold prices, and a grouping variable at the minimum
 #' @param assessed_column The name (not quoted) of the column with assessed values
@@ -73,11 +75,13 @@ grouped_ratio_stats <- function(df,assessed_column,sold_price_column,grouping_co
     stats_table <- map(stats_lists,as.data.frame) %>%
       reduce(full_join) %>%
       mutate(Group=good_groups) %>%
-      dplyr::select(Group,everything())
+      dplyr::select(Group,everything()) %>%
+      mutate(across(where(is.numeric),function(x){round(x,4)}))
+      # roud all numeric to 4 decimals
     stats_table <- stats_table %>%
       bind_rows(
         data.frame(Group=deleted_groups,
-                   N=counts[counts < 3],
+                   Count=counts[counts < 3],
                    Mean=rep(NA,length(deleted_groups)),
                    Mean_Lower=rep(NA,length(deleted_groups)),
                    Mean_Upper=rep(NA,length(deleted_groups)),
@@ -89,16 +93,24 @@ grouped_ratio_stats <- function(df,assessed_column,sold_price_column,grouping_co
                    Coef_of_Dispersion=rep(NA,length(deleted_groups)),
                    Coef_of_Variation=rep(NA,length(deleted_groups)),
                    Price_Related_Bias=rep(NA,length(deleted_groups)),
-                   NormTest_Results=rep(NA,length(deleted_groups)))
-      )
+                   NormTest_Results=rep(NA,length(deleted_groups)))) %>%
+      arrange(Group)
 
+    row.names(stats_table) <- NULL
+
+    # format column order to look like NCSS
+    stats_table <-
+      stats_table %>%
+      dplyr::select(Group,Count,Median,LCL_Median=Median_Lower,UCL_Median=Median_Upper,
+                    Mean,LCL_Mean=Mean_Lower,UCL_Mean=Mean_Upper,
+                    PRD=Price_Related_Differential,COD=Coef_of_Dispersion,COV=Coef_of_Variation,
+                    PRB=Price_Related_Bias,Actual_Coverage,NormTest_Results)
 
     return(stats_table)
     # stats_table$Group <- good_groups
   }
 
 }
-
 
 
 
