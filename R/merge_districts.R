@@ -25,7 +25,7 @@
 #' ggplot(aes(x=district,fill=type)) + geom_bar()
 #' @export
 
-merge_districts2 <- function(df,
+merge_districts <- function(df,
                              N=50,
                              district_id_col="district",
                              sold_price_col="sold_price",
