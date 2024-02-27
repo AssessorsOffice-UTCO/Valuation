@@ -25,13 +25,14 @@
 #' ggplot(aes(x=district,fill=type)) + geom_bar()
 #' @export
 
-merge_districts <- function(df,
-                            N=50,
-                            district_id_col="district",
-                            sold_price_col="sold_price",
-                            res_rcnld_col="res_rcnld",
-                            rl_value_col="rl_value",
-                            acreage_col="acreage"){
+merge_districts2 <- function(df,
+                             N=50,
+                             district_id_col="district",
+                             sold_price_col="sold_price",
+                             res_rcnld_col="res_rcnld",
+                             rl_value_col="rl_value",
+                             acreage_col="acreage",
+                             to_group = 'val_ratio'){
   # find cutoff for splitting "small" and "large" sales groups by land_district
   sales_summary <- df %>%
     group_by(!! sym(district_id_col)) %>% # !! sym() syntax allows string as quosure
@@ -73,7 +74,7 @@ merge_districts <- function(df,
   small_districts_summaries$folded_district <- NA
   for(i in seq_along(small_districts_summaries$median_res_rcnld)){
     closest_large_district <-
-      large_districts_summaries[,!! sym(district_id_col)][which.min(abs(small_districts_summaries$val_ratio[i]-large_districts_summaries$val_ratio))]
+      large_districts_summaries[[district_id_col]][which.min(abs(small_districts_summaries[[to_group]][i]-large_districts_summaries[[to_group]]))]
 
     if(length(closest_large_district) == 0){
       small_districts_summaries$folded_district[i] <- NA
@@ -93,3 +94,4 @@ merge_districts <- function(df,
 
   return(df)
 }
+
