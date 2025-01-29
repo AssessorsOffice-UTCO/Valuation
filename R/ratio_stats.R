@@ -56,7 +56,7 @@ ratio_stats <- function(assessed_value,sold_prices,CI=0.95){
   # current best guess of how NCSS decides which stat to recommend ...
   # Shapiro Test of normailty of ratios
   # If it IS normal, use the mean, if NOT normal, use median
-  if (length(ratio <= 5000)) {
+  if (length(ratio) <= 5000) {
   shap.test <- shapiro.test(ratio)
   shap.pval <- shap.test$p.value
   }
