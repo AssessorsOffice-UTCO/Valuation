@@ -2,7 +2,6 @@
 #'
 #' Taken from DescTools
 #' Modified to use both lower-tail binomial and full binomial values for median CI so as to match NCSS software
-#' The Lower Median CI uses the left-tailed test while the Upper Median CI uses the full test
 #'
 #' @param x a (non-empty) numeric vector of data values
 #' @param conf.level confidence level of the interval
