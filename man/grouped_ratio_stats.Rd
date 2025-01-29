@@ -35,7 +35,9 @@ sale prices, OR it can return a table comparable to NCSS
 }
 \details{
 This function requires a grouping variable, such as a Neighborhood
-It will drop any groups that do not have at least 3 observations, but will still display them at the bottom of the table if output="table"
+It will not perform tests for any groups that have fewer than 3 observations, but will still display them if output="table"
+
+The NormTest_Results field is to match how NCSS decides whether to recommend Mean or Median. It is based on a Shapiro test of normality with a 0.10 cutoff.
 }
 \examples{
 grouped_ratio_stats(df,

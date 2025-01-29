@@ -9,7 +9,7 @@ Description: Collection of custom functions for the UT Co Assessor's Office.
 License: `use_mit_license()`
 Encoding: UTF-8
 LazyData: TRUE
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
 Authors@R: person("Geoffrey","Zahn", email = "GeoffreyZ@utahcounty.gov",
     role = c("aut","cre"), comment = c(ORCID = "0000-0002-8691-692X"))
 Depends: 

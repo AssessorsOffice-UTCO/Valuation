@@ -11,7 +11,8 @@ merge_districts(
   sold_price_col = "sold_price",
   res_rcnld_col = "res_rcnld",
   rl_value_col = "rl_value",
-  acreage_col = "acreage"
+  acreage_col = "acreage",
+  to_group = "val_ratio"
 )
 }
 \arguments{
@@ -32,7 +33,7 @@ A named list of estimated cap rate, including upper and lower bounds:
 mean_estimate, mean_lowerbound, and mean_upperbound
 }
 \description{
-This function finds disctricts with low sales volume and merges them into similar larger districts.
+This function finds districts with low sales volume and merges them into similar larger districts.
 Similarity is determined as the "high-volume" district with the closest median res_rcnld (or other column).
 The function returns an updated data frame with a new column "new_district"
 }
