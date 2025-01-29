@@ -60,6 +60,9 @@ ratio_stats <- function(assessed_value,sold_prices,CI=0.95){
   shap.test <- shapiro.test(ratio)
   shap.pval <- shap.test$p.value
   }
+  else{
+    shap.pval <- NA
+  }
   # NCSS documentation mentions shapiro test and pvalue cutoff of 0.10
 
   stat_to_use <- ifelse(shap.pval < 0.10 | is.na(shap.pval), "use median", "use mean")
